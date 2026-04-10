@@ -34,7 +34,7 @@ interface GraphStore {
   setSelectedElement: (id: string | null) => void;
 }
 
-export const useGraphStore = create<GraphStore>((set) => ({
+export const useGraphStore = create<GraphStore>((set, get) => ({
   // 初始数据
   graph: {
     concepts: [],
@@ -174,7 +174,7 @@ export const useGraphStore = create<GraphStore>((set) => ({
   
   // 数据导入导出
   importGraph: (graph) => set({ graph }),
-  exportGraph: () => useGraphStore.getState().graph,
+  exportGraph: () => get().graph,
   
   // 选择状态
   selectedElement: null,
