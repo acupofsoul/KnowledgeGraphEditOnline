@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Select, Button, Tabs, Divider } from 'antd';
 import { useGraphStore } from '../../stores/graphStore';
 import { useUIStore } from '../../stores/uiStore';
@@ -25,6 +25,25 @@ const SidePanel: React.FC = () => {
     ? edges.find((edge) => edge.id === selection.selectedEdges[0])
     : null;
   
+  // 当选中对象变化时，重置表单
+  useEffect(() => {
+    if (selectedNode) {
+      form.setFieldsValue({
+        label: selectedNode.label,
+        type: selectedNode.type,
+        properties: selectedNode.properties,
+      });
+    } else if (selectedEdge) {
+      form.setFieldsValue({
+        label: selectedEdge.label,
+        type: selectedEdge.type,
+        properties: selectedEdge.properties,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [selectedNode, selectedEdge, form]);
+  
   // 处理表单提交
   const handleSubmit = (values: any) => {
     if (selectedNode) {
@@ -45,8 +64,16 @@ const SidePanel: React.FC = () => {
   // 处理表单值变化
   const handleValuesChange = (changedValues: any) => {
     if (selectedNode) {
+      // 如果类型变化，重置属性
+      if (changedValues.type) {
+        form.setFieldsValue({ properties: {} });
+      }
       updateNode(selectedNode.id, changedValues);
     } else if (selectedEdge) {
+      // 如果类型变化，重置属性
+      if (changedValues.type) {
+        form.setFieldsValue({ properties: {} });
+      }
       updateEdge(selectedEdge.id, changedValues);
     }
   };
@@ -55,15 +82,13 @@ const SidePanel: React.FC = () => {
   const renderNodeForm = () => {
     if (!selectedNode) return null;
     
+    // 获取当前选中的节点类型
+    const currentType = form.getFieldValue('type') || selectedNode.type;
+    
     return (
       <Form
         form={form}
         layout="vertical"
-        initialValues={{
-          label: selectedNode.label,
-          type: selectedNode.type,
-          properties: selectedNode.properties,
-        }}
         onFinish={handleSubmit}
         onValuesChange={handleValuesChange}
       >
@@ -92,7 +117,7 @@ const SidePanel: React.FC = () => {
         <Form.Item label="属性">
           <div className="properties-container">
             {ontology.nodeTypes
-              .find((type) => type.id === selectedNode.type)
+              .find((type) => type.id === currentType)
               ?.properties.map((property) => (
                 <Form.Item
                   key={property.id}
@@ -119,15 +144,13 @@ const SidePanel: React.FC = () => {
   const renderEdgeForm = () => {
     if (!selectedEdge) return null;
     
+    // 获取当前选中的边类型
+    const currentType = form.getFieldValue('type') || selectedEdge.type;
+    
     return (
       <Form
         form={form}
         layout="vertical"
-        initialValues={{
-          label: selectedEdge.label,
-          type: selectedEdge.type,
-          properties: selectedEdge.properties,
-        }}
         onFinish={handleSubmit}
         onValuesChange={handleValuesChange}
       >
@@ -156,7 +179,7 @@ const SidePanel: React.FC = () => {
         <Form.Item label="属性">
           <div className="properties-container">
             {ontology.edgeTypes
-              .find((type) => type.id === selectedEdge.type)
+              .find((type) => type.id === currentType)
               ?.properties.map((property) => (
                 <Form.Item
                   key={property.id}

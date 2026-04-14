@@ -23,7 +23,9 @@ const Toolbar: React.FC = () => {
     clearGraph, 
     importGraph, 
     exportGraph, 
-    deleteSelected 
+    deleteSelected,
+    undo, 
+    redo 
   } = useGraphStore();
   const {
     selection,
@@ -35,8 +37,6 @@ const Toolbar: React.FC = () => {
     setCanvasAutoFit
   } = useUIStore();
   const { 
-    undo, 
-    redo, 
     canUndo, 
     canRedo,
     clearHistory 
