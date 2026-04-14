@@ -30,6 +30,16 @@ interface GraphStore {
   // 导入/导出
   importGraph: (data: { nodes: Node[]; edges: Edge[] }) => void;
   exportGraph: (format: ExportFormat) => string;
+  exportGraphAsImage: (type: 'png' | 'jpg' | 'svg') => void;
+  saveGraph: () => void;
+  loadGraph: () => void;
+  enableAutoSave: (enabled: boolean) => void;
+  
+  // 模板操作
+  saveTemplate: (name: string) => void;
+  loadTemplate: (name: string) => void;
+  getTemplates: () => any[];
+  deleteTemplate: (name: string) => void;
   
   // 辅助方法
   getNodeById: (id: string) => Node | undefined;
@@ -547,5 +557,96 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   // 获取边数量
   getEdgeCount: () => {
     return get().edges.length;
+  },
+  
+  // 保存图谱到本地存储
+  saveGraph: () => {
+    const { nodes, edges } = get();
+    try {
+      localStorage.setItem('knowledge-graph', JSON.stringify({ nodes, edges }));
+      console.log('图谱已保存到本地存储');
+    } catch (error) {
+      console.error('保存图谱失败:', error);
+    }
+  },
+  
+  // 从本地存储加载图谱
+  loadGraph: () => {
+    try {
+      const savedGraph = localStorage.getItem('knowledge-graph');
+      if (savedGraph) {
+        const { nodes, edges } = JSON.parse(savedGraph);
+        set({ nodes, edges });
+        console.log('图谱已从本地存储加载');
+      }
+    } catch (error) {
+      console.error('加载图谱失败:', error);
+    }
+  },
+  
+  // 自动保存图谱
+  enableAutoSave: (enabled: boolean) => {
+    // 这里需要实现自动保存的逻辑
+    // 可以使用节流函数来避免频繁保存
+    console.log(`自动保存已${enabled ? '开启' : '关闭'}`);
+  },
+  
+  // 导出图谱为图片
+  exportGraphAsImage: (type) => {
+    // 这里需要使用 G6 实例的导出功能
+    // 由于 G6 实例在 Canvas 组件中，我们需要通过事件或其他方式触发导出
+    // 这里只是一个占位实现，实际实现需要与 Canvas 组件集成
+    console.log(`导出图谱为${type}格式的图片`);
+    // 实际实现时，需要获取 G6 实例并调用其 toDataURL 方法
+    // 例如：const dataURL = graph.toDataURL({ type: `image/${type}`, ...options });
+  },
+  
+  // 保存图谱模板
+  saveTemplate: (name: string) => {
+    try {
+      const { nodes, edges } = get();
+      const templates = JSON.parse(localStorage.getItem('graph-templates') || '[]');
+      templates.push({ name, nodes, edges, createdAt: new Date().toISOString() });
+      localStorage.setItem('graph-templates', JSON.stringify(templates));
+      console.log(`模板 ${name} 已保存`);
+    } catch (error) {
+      console.error('保存模板失败:', error);
+    }
+  },
+  
+  // 加载图谱模板
+  loadTemplate: (name: string) => {
+    try {
+      const templates = JSON.parse(localStorage.getItem('graph-templates') || '[]');
+      const template = templates.find((t: any) => t.name === name);
+      if (template) {
+        set({ nodes: template.nodes, edges: template.edges });
+        console.log(`模板 ${name} 已加载`);
+      }
+    } catch (error) {
+      console.error('加载模板失败:', error);
+    }
+  },
+  
+  // 获取所有模板
+  getTemplates: () => {
+    try {
+      return JSON.parse(localStorage.getItem('graph-templates') || '[]');
+    } catch (error) {
+      console.error('获取模板失败:', error);
+      return [];
+    }
+  },
+  
+  // 删除模板
+  deleteTemplate: (name: string) => {
+    try {
+      const templates = JSON.parse(localStorage.getItem('graph-templates') || '[]');
+      const filteredTemplates = templates.filter((t: any) => t.name !== name);
+      localStorage.setItem('graph-templates', JSON.stringify(filteredTemplates));
+      console.log(`模板 ${name} 已删除`);
+    } catch (error) {
+      console.error('删除模板失败:', error);
+    }
   },
 }));

@@ -20,6 +20,18 @@ interface UIStore {
     visible: boolean;
     activeSection: 'getting-started' | 'keyboard-shortcuts' | 'advanced';
   };
+  search: {
+    query: string;
+    results: {
+      nodes: string[];
+      edges: string[];
+    };
+    filter: {
+      nodeTypes: string[];
+      edgeTypes: string[];
+      showOnlySelected: boolean;
+    };
+  };
   
   // 操作
   setLayout: (type: LayoutType, options?: any) => void;
@@ -43,6 +55,17 @@ interface UIStore {
   setGridColor: (color: string) => void;
   toggleSnap: (enabled?: boolean) => void;
   setSnapDistance: (distance: number) => void;
+  
+  // 样式操作
+  setNodeStyle: (style: Partial<EditorConfig['style']['node']>) => void;
+  setEdgeStyle: (style: Partial<EditorConfig['style']['edge']>) => void;
+  resetStyle: () => void;
+  
+  // 搜索和过滤操作
+  setSearchQuery: (query: string) => void;
+  setSearchResults: (results: { nodes: string[]; edges: string[] }) => void;
+  setFilter: (filter: Partial<UIStore['search']['filter']>) => void;
+  resetFilter: () => void;
   
   // 辅助方法
   isNodeSelected: (nodeId: string) => boolean;
@@ -86,6 +109,22 @@ const initialConfig: EditorConfig = {
     enabled: true,
     distance: 5,
   },
+  style: {
+    node: {
+      defaultColor: '#1890ff',
+      defaultSize: 40,
+      defaultShape: 'circle',
+      selectedColor: '#ff4d4f',
+      hoveredColor: '#52c41a',
+    },
+    edge: {
+      defaultColor: '#8c8c8c',
+      defaultSize: 2,
+      defaultLineStyle: 'solid',
+      selectedColor: '#ff4d4f',
+      hoveredColor: '#52c41a',
+    },
+  },
 };
 
 // 初始选择状态
@@ -94,6 +133,20 @@ const initialSelection: SelectionState = {
   selectedEdges: [],
   copiedNodes: [],
   copiedEdges: [],
+};
+
+// 初始搜索状态
+const initialSearch = {
+  query: '',
+  results: {
+    nodes: [],
+    edges: [],
+  },
+  filter: {
+    nodeTypes: [],
+    edgeTypes: [],
+    showOnlySelected: false,
+  },
 };
 
 export const useUIStore = create<UIStore>((set, get) => ({
@@ -115,6 +168,7 @@ export const useUIStore = create<UIStore>((set, get) => ({
     visible: false,
     activeSection: 'getting-started',
   },
+  search: initialSearch,
   
   // 设置布局
   setLayout: (type, options) => {
@@ -372,6 +426,91 @@ export const useUIStore = create<UIStore>((set, get) => ({
           ...state.config.snap,
           distance,
         },
+      },
+    }));
+  },
+  
+  // 设置节点样式
+  setNodeStyle: (style) => {
+    set((state) => ({
+      config: {
+        ...state.config,
+        style: {
+          ...state.config.style,
+          node: {
+            ...state.config.style.node,
+            ...style,
+          },
+        },
+      },
+    }));
+  },
+  
+  // 设置边样式
+  setEdgeStyle: (style) => {
+    set((state) => ({
+      config: {
+        ...state.config,
+        style: {
+          ...state.config.style,
+          edge: {
+            ...state.config.style.edge,
+            ...style,
+          },
+        },
+      },
+    }));
+  },
+  
+  // 重置样式
+  resetStyle: () => {
+    set((state) => ({
+      config: {
+        ...state.config,
+        style: initialConfig.style,
+      },
+    }));
+  },
+  
+  // 设置搜索查询
+  setSearchQuery: (query) => {
+    set((state) => ({
+      search: {
+        ...state.search,
+        query,
+      },
+    }));
+  },
+  
+  // 设置搜索结果
+  setSearchResults: (results) => {
+    set((state) => ({
+      search: {
+        ...state.search,
+        results,
+      },
+    }));
+  },
+  
+  // 设置过滤器
+  setFilter: (filter) => {
+    set((state) => ({
+      search: {
+        ...state.search,
+        filter: {
+          ...state.search.filter,
+          ...filter,
+        },
+      },
+    }));
+  },
+  
+  // 重置过滤器
+  resetFilter: () => {
+    set((state) => ({
+      search: {
+        ...state.search,
+        filter: initialSearch.filter,
       },
     }));
   },

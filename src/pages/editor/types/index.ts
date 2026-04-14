@@ -154,6 +154,24 @@ export interface CanvasConfig {
   autoFit: boolean;
 }
 
+// 样式配置
+export interface StyleConfig {
+  node: {
+    defaultColor: string;
+    defaultSize: number;
+    defaultShape: string;
+    selectedColor: string;
+    hoveredColor: string;
+  };
+  edge: {
+    defaultColor: string;
+    defaultSize: number;
+    defaultLineStyle: 'solid' | 'dashed' | 'dotted';
+    selectedColor: string;
+    hoveredColor: string;
+  };
+}
+
 // 编辑器配置
 export interface EditorConfig {
   canvas: CanvasConfig;
@@ -177,4 +195,5 @@ export interface EditorConfig {
     enabled: boolean;
     distance: number;
   };
+  style: StyleConfig;
 }

@@ -9,7 +9,8 @@ import {
   DeleteOutlined,
   PlusOutlined,
   SaveOutlined,
-  ReloadOutlined
+  ReloadOutlined,
+  FolderOpenOutlined
 } from '@ant-design/icons';
 import { useGraphStore } from '../../stores/graphStore';
 import { useUIStore } from '../../stores/uiStore';
@@ -25,7 +26,9 @@ const Toolbar: React.FC = () => {
     exportGraph, 
     deleteSelected,
     undo, 
-    redo 
+    redo,
+    saveGraph,
+    loadGraph
   } = useGraphStore();
   const {
     selection,
@@ -126,11 +129,25 @@ const Toolbar: React.FC = () => {
     }
   };
   
+  // 处理保存
+  const handleSave = () => {
+    saveGraph();
+  };
+  
+  // 处理加载
+  const handleLoad = () => {
+    loadGraph();
+  };
+  
   return (
     <div className="toolbar">
       <div className="toolbar-left">
         <Tooltip title="导入">
           <Button icon={<ImportOutlined />} onClick={handleImport} />
+        </Tooltip>
+        
+        <Tooltip title="加载">
+          <Button icon={<FolderOpenOutlined />} onClick={handleLoad} />
         </Tooltip>
         
         <Dropdown overlay={exportMenu} trigger={['click']}>
@@ -140,7 +157,7 @@ const Toolbar: React.FC = () => {
         </Dropdown>
         
         <Tooltip title="保存">
-          <Button icon={<SaveOutlined />} />
+          <Button icon={<SaveOutlined />} onClick={handleSave} />
         </Tooltip>
         
         <Divider type="vertical" />
