@@ -1,0 +1,30 @@
+{
+  "name": "knowledge-graph-edit-online",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "max dev",
+    "build": "max build",
+    "postinstall": "max setup",
+    "setup": "max setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.2.0",
+    "@ant-design/pro-components": "^2.6.0",
+    "@antv/g6": "^5.0.0",
+    "@types/lodash": "^4.17.23",
+    "@types/uuid": "^10.0.0",
+    "@umijs/max": "^4.0.0",
+    "antd": "^5.12.0",
+    "lodash": "^4.17.23",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}
