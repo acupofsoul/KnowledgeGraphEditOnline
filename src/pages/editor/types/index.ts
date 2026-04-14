@@ -172,6 +172,34 @@ export interface StyleConfig {
   };
 }
 
+// 大模型配置
+export interface LLMConfig {
+  enabled: boolean;
+  provider: 'openai' | 'azure' | 'anthropic' | 'google' | 'custom';
+  apiKey: string;
+  endpoint: string;
+  model: string;
+  temperature: number;
+  maxTokens: number;
+}
+
+// 图数据库配置
+export interface GraphDBConfig {
+  enabled: boolean;
+  type: 'neo4j' | 'janusgraph' | 'tigergraph' | 'custom';
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+}
+
+// 外部服务配置
+export interface ExternalServicesConfig {
+  llm: LLMConfig;
+  graphDB: GraphDBConfig;
+}
+
 // 编辑器配置
 export interface EditorConfig {
   canvas: CanvasConfig;
@@ -196,4 +224,5 @@ export interface EditorConfig {
     distance: number;
   };
   style: StyleConfig;
+  externalServices: ExternalServicesConfig;
 }

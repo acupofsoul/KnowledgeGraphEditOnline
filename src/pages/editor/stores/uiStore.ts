@@ -20,6 +20,9 @@ interface UIStore {
     visible: boolean;
     activeSection: 'getting-started' | 'keyboard-shortcuts' | 'advanced';
   };
+  externalServicesPanel: {
+    visible: boolean;
+  };
   search: {
     query: string;
     results: {
@@ -47,6 +50,7 @@ interface UIStore {
   setOntologyDesignerTab: (tab: 'nodeTypes' | 'edgeTypes' | 'typeGroups') => void;
   toggleHelpPanel: (visible?: boolean) => void;
   setHelpPanelSection: (section: 'getting-started' | 'keyboard-shortcuts' | 'advanced') => void;
+  toggleExternalServicesPanel: (visible?: boolean) => void;
   setCanvasZoom: (zoom: number) => void;
   setCanvasPan: (pan: { x: number; y: number }) => void;
   setCanvasAutoFit: (autoFit: boolean) => void;
@@ -66,6 +70,12 @@ interface UIStore {
   setSearchResults: (results: { nodes: string[]; edges: string[] }) => void;
   setFilter: (filter: Partial<UIStore['search']['filter']>) => void;
   resetFilter: () => void;
+  
+  // 外部服务操作
+  setLLMConfig: (config: Partial<EditorConfig['externalServices']['llm']>) => void;
+  setGraphDBConfig: (config: Partial<EditorConfig['externalServices']['graphDB']>) => void;
+  testLLMConnection: () => Promise<boolean>;
+  testGraphDBConnection: () => Promise<boolean>;
   
   // 辅助方法
   isNodeSelected: (nodeId: string) => boolean;
@@ -125,6 +135,26 @@ const initialConfig: EditorConfig = {
       hoveredColor: '#52c41a',
     },
   },
+  externalServices: {
+    llm: {
+      enabled: false,
+      provider: 'openai',
+      apiKey: '',
+      endpoint: 'https://api.openai.com/v1/chat/completions',
+      model: 'gpt-4o',
+      temperature: 0.7,
+      maxTokens: 1000,
+    },
+    graphDB: {
+      enabled: false,
+      type: 'neo4j',
+      host: 'localhost',
+      port: 7687,
+      username: 'neo4j',
+      password: 'password',
+      database: 'neo4j',
+    },
+  },
 };
 
 // 初始选择状态
@@ -167,6 +197,9 @@ export const useUIStore = create<UIStore>((set, get) => ({
   helpPanel: {
     visible: false,
     activeSection: 'getting-started',
+  },
+  externalServicesPanel: {
+    visible: false,
   },
   search: initialSearch,
   
@@ -322,6 +355,16 @@ export const useUIStore = create<UIStore>((set, get) => ({
       },
     }));
   },
+  
+  // 切换外部服务面板
+  toggleExternalServicesPanel: (visible) => {
+    set((state) => ({
+      externalServicesPanel: {
+        visible: visible !== undefined ? visible : !state.externalServicesPanel.visible,
+      },
+    }));
+  },
+
   
   // 设置画布缩放
   setCanvasZoom: (zoom) => {
@@ -513,6 +556,78 @@ export const useUIStore = create<UIStore>((set, get) => ({
         filter: initialSearch.filter,
       },
     }));
+  },
+  
+  // 设置大模型配置
+  setLLMConfig: (config) => {
+    set((state) => ({
+      config: {
+        ...state.config,
+        externalServices: {
+          ...state.config.externalServices,
+          llm: {
+            ...state.config.externalServices.llm,
+            ...config,
+          },
+        },
+      },
+    }));
+  },
+  
+  // 设置图数据库配置
+  setGraphDBConfig: (config) => {
+    set((state) => ({
+      config: {
+        ...state.config,
+        externalServices: {
+          ...state.config.externalServices,
+          graphDB: {
+            ...state.config.externalServices.graphDB,
+            ...config,
+          },
+        },
+      },
+    }));
+  },
+  
+  // 测试大模型连接
+  testLLMConnection: async () => {
+    const { llm } = get().config.externalServices;
+    if (!llm.enabled || !llm.apiKey) {
+      return false;
+    }
+    
+    try {
+      // 这里需要实现实际的连接测试逻辑
+      // 例如：调用大模型的API进行测试
+      console.log('测试大模型连接...');
+      // 实际实现时，需要根据不同的提供商调用相应的API
+      // 这里只是一个占位实现
+      return true;
+    } catch (error) {
+      console.error('大模型连接测试失败:', error);
+      return false;
+    }
+  },
+  
+  // 测试图数据库连接
+  testGraphDBConnection: async () => {
+    const { graphDB } = get().config.externalServices;
+    if (!graphDB.enabled) {
+      return false;
+    }
+    
+    try {
+      // 这里需要实现实际的连接测试逻辑
+      // 例如：连接到图数据库并执行简单查询
+      console.log('测试图数据库连接...');
+      // 实际实现时，需要根据不同的数据库类型使用相应的驱动
+      // 这里只是一个占位实现
+      return true;
+    } catch (error) {
+      console.error('图数据库连接测试失败:', error);
+      return false;
+    }
   },
   
   // 检查节点是否被选中

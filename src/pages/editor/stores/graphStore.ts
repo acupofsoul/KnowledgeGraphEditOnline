@@ -41,6 +41,12 @@ interface GraphStore {
   getTemplates: () => any[];
   deleteTemplate: (name: string) => void;
   
+  // 外部服务操作
+  importFromGraphDB: () => Promise<void>;
+  exportToGraphDB: () => Promise<void>;
+  generateGraphFromLLM: (prompt: string) => Promise<void>;
+  analyzeGraphWithLLM: (prompt: string) => Promise<string>;
+  
   // 辅助方法
   getNodeById: (id: string) => Node | undefined;
   getEdgeById: (id: string) => Edge | undefined;
@@ -647,6 +653,58 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
       console.log(`模板 ${name} 已删除`);
     } catch (error) {
       console.error('删除模板失败:', error);
+    }
+  },
+  
+  // 从图数据库导入数据
+  importFromGraphDB: async () => {
+    try {
+      console.log('从图数据库导入数据...');
+      // 这里需要实现实际的导入逻辑
+      // 例如：连接到图数据库，执行查询，将结果转换为图谱数据
+      // 这里只是一个占位实现
+    } catch (error) {
+      console.error('从图数据库导入失败:', error);
+    }
+  },
+  
+  // 导出数据到图数据库
+  exportToGraphDB: async () => {
+    try {
+      const { nodes, edges } = get();
+      console.log('导出数据到图数据库...');
+      // 这里需要实现实际的导出逻辑
+      // 例如：连接到图数据库，将图谱数据转换为数据库操作，执行写入
+      // 这里只是一个占位实现
+    } catch (error) {
+      console.error('导出到图数据库失败:', error);
+    }
+  },
+  
+  // 使用大模型生成图谱
+  generateGraphFromLLM: async (prompt: string) => {
+    try {
+      console.log('使用大模型生成图谱...');
+      // 这里需要实现实际的生成逻辑
+      // 例如：调用大模型API，解析响应，转换为图谱数据
+      // 这里只是一个占位实现
+    } catch (error) {
+      console.error('使用大模型生成图谱失败:', error);
+    }
+  },
+  
+  // 使用大模型分析图谱
+  analyzeGraphWithLLM: async (prompt: string) => {
+    try {
+      const { nodes, edges } = get();
+      console.log('使用大模型分析图谱...');
+      // 这里需要实现实际的分析逻辑
+      // 例如：调用大模型API，传递图谱数据和分析提示，获取分析结果
+      // 这里只是一个占位实现
+      return '分析结果将显示在这里';
+    } catch (error) {
+      console.error('使用大模型分析图谱失败:', error);
+      return '分析失败';
     }
   },
 }));

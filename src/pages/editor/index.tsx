@@ -1,17 +1,18 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Modal } from 'antd';
 import Canvas from './components/Canvas';
 import SidePanel from './components/SidePanel';
 import Toolbar from './components/Toolbar';
 import StatusBar from './components/StatusBar';
 import ContextMenu from './components/ContextMenu';
+import ExternalServices from './components/ExternalServices';
 import { useUIStore } from './stores/uiStore';
 import './index.less';
 
 const { Header, Content, Sider } = Layout;
 
 const Editor: React.FC = () => {
-  const { config } = useUIStore();
+  const { config, externalServicesPanel, toggleExternalServicesPanel } = useUIStore();
   
   return (
     <Layout style={{ height: '100vh' }}>
@@ -46,6 +47,17 @@ const Editor: React.FC = () => {
       
       {/* 上下文菜单 */}
       <ContextMenu />
+      
+      {/* 外部服务面板 */}
+      <Modal
+        title="外部服务配置"
+        open={externalServicesPanel.visible}
+        onCancel={() => toggleExternalServicesPanel(false)}
+        width={800}
+        footer={null}
+      >
+        <ExternalServices />
+      </Modal>
     </Layout>
   );
 };

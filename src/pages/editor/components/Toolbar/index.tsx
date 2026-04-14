@@ -10,7 +10,8 @@ import {
   PlusOutlined,
   SaveOutlined,
   ReloadOutlined,
-  FolderOpenOutlined
+  FolderOpenOutlined,
+  CloudOutlined
 } from '@ant-design/icons';
 import { useGraphStore } from '../../stores/graphStore';
 import { useUIStore } from '../../stores/uiStore';
@@ -37,6 +38,7 @@ const Toolbar: React.FC = () => {
     toggleSidePanel,
     toggleOntologyDesigner,
     toggleHelpPanel,
+    toggleExternalServicesPanel,
     setCanvasAutoFit
   } = useUIStore();
   const { 
@@ -233,6 +235,12 @@ const Toolbar: React.FC = () => {
         <Tooltip title="帮助">
           <Button onClick={() => toggleHelpPanel()}>
             帮助
+          </Button>
+        </Tooltip>
+        
+        <Tooltip title="外部服务">
+          <Button onClick={() => toggleExternalServicesPanel()}>
+            外部服务
           </Button>
         </Tooltip>
       </div>
