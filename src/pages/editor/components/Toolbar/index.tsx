@@ -11,7 +11,7 @@ import {
   SaveOutlined,
   ReloadOutlined,
   FolderOpenOutlined,
-  CloudOutlined
+  SettingOutlined
 } from '@ant-design/icons';
 import { useGraphStore } from '../../stores/graphStore';
 import { useUIStore } from '../../stores/uiStore';
@@ -239,7 +239,7 @@ const Toolbar: React.FC = () => {
         </Tooltip>
         
         <Tooltip title="外部服务">
-          <Button onClick={() => toggleExternalServicesPanel()}>
+          <Button icon={<SettingOutlined />} onClick={() => toggleExternalServicesPanel()}>
             外部服务
           </Button>
         </Tooltip>

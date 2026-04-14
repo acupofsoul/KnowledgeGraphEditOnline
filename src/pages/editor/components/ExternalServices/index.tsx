@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Form, Input, Select, Switch, Button, Tabs, message, Typography } from 'antd';
-import { SaveOutlined, TestTubeOutlined, DatabaseOutlined, BrainOutlined } from '@ant-design/icons';
+import { SaveOutlined, CheckCircleOutlined, DatabaseOutlined, ApiOutlined, PlusOutlined } from '@ant-design/icons';
 import { useUIStore } from '../../stores/uiStore';
 import { useGraphStore } from '../../stores/graphStore';
 import './index.less';
@@ -134,7 +134,7 @@ const ExternalServices: React.FC = () => {
       
       <Tabs defaultActiveKey="llm">
         {/* 大模型配置 */}
-        <TabPane tab={<><BrainOutlined /> 大模型配置</>} key="llm">
+        <TabPane tab={<><ApiOutlined /> 大模型配置</>} key="llm">
           <Card>
             <Form
               form={form}
@@ -181,7 +181,7 @@ const ExternalServices: React.FC = () => {
               <Form.Item>
                 <Button 
                   type="primary" 
-                  icon={<TestTubeOutlined />} 
+                  icon={<CheckCircleOutlined />} 
                   onClick={handleTestLLMConnection}
                   loading={loading}
                 >
@@ -277,7 +277,7 @@ const ExternalServices: React.FC = () => {
               <Form.Item>
                 <Button 
                   type="primary" 
-                  icon={<TestTubeOutlined />} 
+                  icon={<CheckCircleOutlined />} 
                   onClick={handleTestGraphDBConnection}
                   loading={loading}
                 >
