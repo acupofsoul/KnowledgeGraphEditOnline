@@ -1,0 +1,28 @@
+{
+  "name": "knowledge-graph-editor",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "start": "npm run dev",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.3.7",
+    "@antv/g6": "^5.0.3",
+    "antd": "^5.16.5",
+    "dexie": "^3.2.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "less": "^4.6.4",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.0"
+  }
+}
