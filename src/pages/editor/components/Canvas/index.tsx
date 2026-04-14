@@ -348,11 +348,8 @@ const Canvas: React.FC = () => {
     
     const graph = graphRef.current;
     
-    // 更新布局
-    (graph as any).updateLayout({
-      type: config.layout.type,
-      ...config.layout.options,
-    });
+    // 重新渲染图表以应用新布局
+    graph.render();
   }, [config.layout, isInitializing]);
   
   // 处理窗口大小变化

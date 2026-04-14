@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Form, Input, Select, Switch, Button, Tabs, message, Typography } from 'antd';
-import { SaveOutlined, CheckCircleOutlined, DatabaseOutlined, ApiOutlined, PlusOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined } from '@ant-design/icons';
 import { useUIStore } from '../../stores/uiStore';
 import { useGraphStore } from '../../stores/graphStore';
 import './index.less';
@@ -134,7 +134,7 @@ const ExternalServices: React.FC = () => {
       
       <Tabs defaultActiveKey="llm">
         {/* 大模型配置 */}
-        <TabPane tab={<><ApiOutlined /> 大模型配置</>} key="llm">
+        <TabPane tab="大模型配置" key="llm">
           <Card>
             <Form
               form={form}
@@ -232,7 +232,7 @@ const ExternalServices: React.FC = () => {
         </TabPane>
         
         {/* 图数据库配置 */}
-        <TabPane tab={<><DatabaseOutlined /> 图数据库配置</>} key="graphdb">
+        <TabPane tab="图数据库配置" key="graphdb">
           <Card>
             <Form
               layout="vertical"
@@ -291,7 +291,6 @@ const ExternalServices: React.FC = () => {
             <div style={{ display: 'flex', gap: 12 }}>
               <Button 
                 type="primary" 
-                icon={<DatabaseOutlined />} 
                 onClick={handleImportFromGraphDB}
                 loading={loading}
               >
@@ -299,7 +298,6 @@ const ExternalServices: React.FC = () => {
               </Button>
               <Button 
                 type="default" 
-                icon={<SaveOutlined />} 
                 onClick={handleExportToGraphDB}
                 loading={loading}
               >
