@@ -370,26 +370,24 @@ const Canvas: React.FC = () => {
   
   // 处理画布点击，添加新节点
   const handleCanvasClick = (e: React.MouseEvent) => {
-    if (e.target === canvasRef.current) {
-      // 点击空白处，添加新节点
-      const rect = canvasRef.current?.getBoundingClientRect();
-      if (rect) {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        addNode({
-          label: '新节点',
-          type: ontology.nodeTypes[0].id,
-          properties: {},
-          x,
-          y,
-        });
-        
-        addHistoryItem('add', {
-          type: 'node',
-          data: { x, y },
-        });
-      }
+    // 检查点击是否发生在画布容器内
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (rect) {
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      addNode({
+        label: '新节点',
+        type: ontology.nodeTypes[0].id,
+        properties: {},
+        x,
+        y,
+      });
+      
+      addHistoryItem('add', {
+        type: 'node',
+        data: { x, y },
+      });
     }
   };
   
