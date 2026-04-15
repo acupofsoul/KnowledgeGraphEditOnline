@@ -370,9 +370,9 @@ const Canvas: React.FC = () => {
   
   // 处理画布点击，添加新节点
   const handleCanvasClick = (e: React.MouseEvent) => {
-    // 检查点击是否发生在画布容器内
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (rect) {
+    // 检查是否点击在画布空白处（不是节点或边上）
+    if (e.target instanceof HTMLDivElement && e.target.className === 'canvas-container') {
+      const rect = e.target.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
