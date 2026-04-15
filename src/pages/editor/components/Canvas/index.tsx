@@ -308,7 +308,7 @@ const Canvas: React.FC = () => {
       graph.destroy();
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [ontology, edges, moveNodes, updateNode, addEdge, deleteSelected, addHistoryItem, selection, setSelection, clearSelection, addToSelection, setContextMenu]);
+  }, [ontology, moveNodes, updateNode, addEdge, deleteSelected, addHistoryItem, selection, setSelection, clearSelection, addToSelection, setContextMenu]);
   
   // 更新图表数据
   useEffect(() => {
@@ -336,11 +336,13 @@ const Canvas: React.FC = () => {
       label: edge.label,
     }));
     
-    graph.updateData({
+    // 在 G6 5.x 中，使用 render 方法更新数据
+    graph.data({
       nodes: g6Nodes,
       edges: g6Edges,
     });
-  }, [nodes, edges, selection, isInitializing, ontology]);
+    graph.render();
+  }, [nodes, selection, isInitializing, ontology]);
   
   // 处理布局变化
   useEffect(() => {
